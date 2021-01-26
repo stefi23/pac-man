@@ -2,14 +2,31 @@ html,
 body {
   margin: 10;
   padding: 10;
+  font-family: "Press Start 2P", cursive;
+  background-color: rebeccapurple;
+}
+
+h1,
+h3 {
+  text-align: center;
+  color: yellow;
+}
+
+.container {
+  margin: 40px;
+  max-width: 700px;
+  margin: auto;
+  /* border: fuchsia 1px solid; */
 }
 
 .grid {
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   width: 420px;
   height: 420px;
-  border: solid black;
+  border: solid yellow;
+  background-color: #5657ff;
 }
 
 .grid div {
@@ -18,43 +35,52 @@ body {
 }
 
 .pac-dot {
-  background-color: green;
-  border: 5px solid white;
+  background-color: yellow;
+  border: 6px solid #5657ff;
   box-sizing: border-box;
+}
+.empty {
+  background-color: #5657ff;
+}
+.ghost-lair {
+  background-color: #5657ff;
 }
 
 .wall {
-  background-color: blue;
+  background-color: #030303;
 }
 
 .power-pellet {
-  background-color: green;
+  /* background-color: yellow; */
   border-radius: 7.5px;
+  background-color: yellow;
+  border: 3px solid #5657ff;
+  box-sizing: border-box;
 }
 
 .pacman {
-  background-color: orange;
-  border-radius: 7.5px;
+  background-color: yellow;
+  border-radius: 5px;
   border: none;
 }
 
 .blinky {
-  background-color: red;
+  background-color: #fa2402;
   border: none;
 }
 
 .pinky {
-  background-color: pink;
+  background-color: #fdb3b0;
   border: none;
 }
 
 .inky {
-  background-color: purple;
+  background-color: #02dde1;
   border: none;
 }
 
 .clyde {
-  background-color: orange;
+  background-color: #f8a202;
   border: none;
 }
 

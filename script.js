@@ -60,6 +60,8 @@ let score = 0
         } 
         else if (layout[i] === 3) {
             squares[i].classList.add('power-pellet')
+        } else if (layout[i] === 4) {
+            squares[i].classList.add('empty')
         } 
      }
  }
@@ -74,12 +76,14 @@ function control(e){
  squares[pacManCurrentIndex].classList.remove('pacman')
     switch(e.keyCode){
         case 40:
-        console.log('pressed down')
+        //'pressed down'
         
         if (
-            !squares[pacManCurrentIndex + width].classList.contains('ghost-lair')
+            !moveContainsGhostLair(pacManCurrentIndex + width)
+            // !squares[pacManCurrentIndex + width].classList.contains('ghost-lair')
             &&
-            !squares[pacManCurrentIndex + width].classList.contains('wall')
+            !moveContainsWalls(pacManCurrentIndex + width)
+            // !squares[pacManCurrentIndex + width].classList.contains('wall')
             &&
             pacManCurrentIndex + width < width * width) {
             
@@ -87,11 +91,13 @@ function control(e){
         }
         break
         case 38: 
-        console.log('pressed up')
+        //'pressed up'
         if (
-            !squares[pacManCurrentIndex - width].classList.contains('ghost-lair')
+            !moveContainsGhostLair(pacManCurrentIndex - width)
+            // !squares[pacManCurrentIndex - width].classList.contains('ghost-lair')
             &&
-            !squares[pacManCurrentIndex - width].classList.contains('wall')
+            !moveContainsWalls(pacManCurrentIndex - width)
+            // !squares[pacManCurrentIndex - width].classList.contains('wall')
             &&
             pacManCurrentIndex - width >= 0) {
             
@@ -99,12 +105,13 @@ function control(e){
         }
         break
         case 37:
-        console.log('pressed left')
+        //'pressed left'
         if (
-            !squares[pacManCurrentIndex - 1].classList.contains('ghost-lair')
+            !moveContainsGhostLair(pacManCurrentIndex - 1)
+            // !squares[pacManCurrentIndex - 1].classList.contains('ghost-lair')
             &&
-
-            !squares[pacManCurrentIndex - 1].classList.contains('wall')
+            !moveContainsWalls(pacManCurrentIndex - 1)
+            // !squares[pacManCurrentIndex - 1].classList.contains('wall')
             &&
             pacManCurrentIndex % width !== 0) {
             
@@ -116,12 +123,13 @@ function control(e){
         }
         break
         case 39:
-        console.log('pressed right')
+        //'pressed right'
         if (
-            !squares[pacManCurrentIndex + 1].classList.contains('ghost-lair')
+            !moveContainsGhostLair(pacManCurrentIndex + 1)
+            // !squares[pacManCurrentIndex + 1].classList.contains('ghost-lair')
             &&
-
-            !squares[pacManCurrentIndex +1].classList.contains('wall')
+            !moveContainsWalls(pacManCurrentIndex + 1)
+            // !squares[pacManCurrentIndex +1].classList.contains('wall')
             &&
             pacManCurrentIndex % width < width -1) {
             
@@ -163,19 +171,13 @@ class Ghost {
 }
 
 function powerPelletEaten() {
-    //if square pacman is in contains a power pellet
     if(squares[pacManCurrentIndex].classList.contains('power-pellet')){
         squares[pacManCurrentIndex].classList.remove('power-pellet')
-    //add a score of 10
     score += 10
-    //change each of the four ghosts to isScared
     ghosts.forEach((ghost)=> {
         ghost.isScared = true
     })
-    // setTimeout(function, 10000
-    // ) 
     setTimeout(unScareGhosts, 10000)
-    //use setTimeout to unscareghosts after 10 seconds
     } 
 }
 
@@ -221,18 +223,13 @@ function moveGhost(ghost) {
     }
 
     if(ghost.isScared){
-        // squares[ghost.currentIndex].classList.add('scared-ghost')
         squares[ghost.currentIndex].classList.add('scared-ghost')
     }
 
     if (ghost.isScared && squares[ghost.currentIndex].classList.contains('pacman')) {
-            //remove classnames - ghost.className, 'ghost', 'scared-ghost'
             squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
-            // change ghosts currentIndex back to its startIndex
             ghost.currentIndex = ghost.startIndex
-            //add a score of 100
-            score +=100
-            //re-add classnames of ghost.className and 'ghost' to the ghosts new postion  
+            score +=100  
             squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
         }
 
@@ -264,4 +261,12 @@ function checkForWin(){
 function stopGame(){
  ghosts.forEach(ghost => clearInterval(ghost.timerId))
         document.removeEventListener('keyup', control)
+}
+
+function moveContainsGhostLair(indexToCheck){
+    return squares[indexToCheck].classList.contains('ghost-lair')
+}
+
+function moveContainsWalls(indexToCheck){
+    return squares[indexToCheck].classList.contains('wall')
 }
