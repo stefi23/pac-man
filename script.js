@@ -136,6 +136,7 @@ function control(e){
 pacDotEaten()
 powerPelletEaten()
 checkIfgameOver()
+checkForWin()
    
 }
 
@@ -246,10 +247,21 @@ function checkIfgameOver(){
     if(squares[pacManCurrentIndex].classList.contains('ghost')
     && !squares[pacManCurrentIndex].classList.contains('scared-ghost')
     ){
-        ghosts.forEach(ghost => clearInterval(ghost.timerId))
-        document.removeEventListener('keyup', control)
-        scoreDisplay.innerHTML = 'You LOSE'
+        stopGame()
+        scoreDisplay.innerHTML = 'You LOSE!'
 
     }
 
+}
+
+function checkForWin(){
+    if(score === 274 || score > 274){
+       stopGame()
+        scoreDisplay.innerHTML = 'You have WON!'
+    }
+}
+
+function stopGame(){
+ ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        document.removeEventListener('keyup', control)
 }
