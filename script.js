@@ -1,3 +1,4 @@
+
  const width = 28
  const grid = document.querySelector('.grid')
  const scoreDisplay = document.getElementById('score')
@@ -78,11 +79,11 @@ function control(e){
         if (
             !squares[pacManCurrentIndex + width].classList.contains('ghost-lair')
             &&
- 
             !squares[pacManCurrentIndex + width].classList.contains('wall')
             &&
             pacManCurrentIndex + width < width * width) {
-            pacManCurrentIndex += width
+            
+                pacManCurrentIndex += width
         }
         break
         case 38: 
@@ -93,7 +94,8 @@ function control(e){
             !squares[pacManCurrentIndex - width].classList.contains('wall')
             &&
             pacManCurrentIndex - width >= 0) {
-            pacManCurrentIndex -= width
+            
+                pacManCurrentIndex -= width
         }
         break
         case 37:
@@ -122,7 +124,8 @@ function control(e){
             !squares[pacManCurrentIndex +1].classList.contains('wall')
             &&
             pacManCurrentIndex % width < width -1) {
-            pacManCurrentIndex +=1
+            
+                pacManCurrentIndex +=1
                 if(pacManCurrentIndex === 391) {
                     pacManCurrentIndex = 364
                 }
@@ -137,7 +140,8 @@ pacDotEaten()
 document.addEventListener('keyup', control)
 
 function pacDotEaten() {
-    if(squares[pacManCurrentIndex].classList.contains('pac-dot')){
+    if(squares[pacManCurrentIndex].classList.contains('pac-dot')) {
+        
         squares[pacManCurrentIndex].classList.remove('pac-dot')
         score++
         scoreDisplay.innerHTML = score
@@ -149,6 +153,9 @@ class Ghost {
         this.className = className
         this.startIndex = startIndex
         this.speed = speed
+        this.currentIndex = startIndex
+        this.isScared = false
+        this.timerId = NaN
     }
 }
 
@@ -160,4 +167,36 @@ const ghosts = [
 ]
 
 
-ghosts.forEach(ghost => squares[ghost.startIndex].classList.add(ghost.className))
+ghosts.forEach(ghost => {
+    squares[ghost.currentIndex].classList.add(ghost.className)
+    squares[ghost.currentIndex].classList.add('ghost')
+})
+
+ghosts.forEach(ghost => { 
+      moveGhost(ghost)
+    })
+
+function moveGhost(ghost) {
+    console.log('moved ghost')
+    const directions = [-1, +1, -width, +width]
+    let direction = directions[Math.floor(Math.random()* directions.length)]
+    console.log(direction)
+
+    ghost.timerId = setInterval(function(){
+        if(!squares[ghost.currentIndex + direction].classList.contains('wall') &&
+            !squares[ghost.currentIndex + direction].classList.contains('ghost')){
+                squares[ghost.currentIndex].classList.remove(ghost.className)
+                squares[ghost.currentIndex].classList.remove('ghost')
+                ghost.currentIndex += direction
+                squares[ghost.currentIndex].classList.add(ghost.className)
+                squares[ghost.currentIndex].classList.add('ghost')
+        } else {
+            direction = directions[Math.floor(Math.random() * directions.length)]
+    }
+
+    }, ghost.speed)
+
+    
+} 
+
+// clearInterval(ghost.timerId)
