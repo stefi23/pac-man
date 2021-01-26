@@ -4,6 +4,8 @@
 
 let squares =[]
 
+let score = 0
+
 //28 * 28 = 784
   // 0 - pac-dots
   // 1 - wall
@@ -52,7 +54,10 @@ let squares =[]
             squares[i].classList.add('pac-dot')
         } else if (layout[i] === 1) {
             squares[i].classList.add('wall')
-        } else if (layout[i] === 3) {
+        } else if(layout[i] === 2) {
+            squares[i].classList.add('ghost-lair')
+        } 
+        else if (layout[i] === 3) {
             squares[i].classList.add('power-pellet')
         } 
      }
@@ -71,6 +76,9 @@ function control(e){
         console.log('pressed down')
         
         if (
+            !squares[pacManCurrentIndex + width].classList.contains('ghost-lair')
+            &&
+ 
             !squares[pacManCurrentIndex + width].classList.contains('wall')
             &&
             pacManCurrentIndex + width < width * width) {
@@ -80,6 +88,8 @@ function control(e){
         case 38: 
         console.log('pressed up')
         if (
+            !squares[pacManCurrentIndex - width].classList.contains('ghost-lair')
+            &&
             !squares[pacManCurrentIndex - width].classList.contains('wall')
             &&
             pacManCurrentIndex - width >= 0) {
@@ -89,33 +99,47 @@ function control(e){
         case 37:
         console.log('pressed left')
         if (
+            !squares[pacManCurrentIndex - 1].classList.contains('ghost-lair')
+            &&
+
             !squares[pacManCurrentIndex - 1].classList.contains('wall')
             &&
             pacManCurrentIndex % width !== 0) {
-            pacManCurrentIndex -=1
+            
+                pacManCurrentIndex -= 1
+                if(pacManCurrentIndex === 364) {
+                    pacManCurrentIndex = 391
+                }
+                
         }
         break
         case 39:
         console.log('pressed right')
         if (
+            !squares[pacManCurrentIndex + 1].classList.contains('ghost-lair')
+            &&
+
             !squares[pacManCurrentIndex +1].classList.contains('wall')
             &&
             pacManCurrentIndex % width < width -1) {
             pacManCurrentIndex +=1
+                if(pacManCurrentIndex === 391) {
+                    pacManCurrentIndex = 364
+                }
         }
         break
     }
     squares[pacManCurrentIndex].classList.add('pacman')
-
-    // if(e.keyCode === 40){
-    //     console.log('pressed down')
-    // } else if(e.keyCode === 37){
-    //     console.log('pressed left')
-    // }else if(e.keyCode === 38){
-    //     console.log('pressed up')
-    // }else if(e.keyCode === 39){
-    //     console.log('pressed right')
-    // }
+pacDotEaten()
+   
 }
 
 document.addEventListener('keyup', control)
+
+function pacDotEaten() {
+    if(squares[pacManCurrentIndex].classList.contains('pac-dot')){
+        squares[pacManCurrentIndex].classList.remove('pac-dot')
+        score++
+        scoreDisplay.innerHTML = score
+    }
+}
